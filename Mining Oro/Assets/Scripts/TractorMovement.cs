@@ -44,7 +44,7 @@ public class TractorController : MonoBehaviour
 
         // Move tractor
         Vector3 move = transform.forward * currentSpeed;
-        rb.velocity = new Vector3(move.x, rb.linearVelocity.y, move.z);
+        rb.linearVelocity = new Vector3(move.x, rb.linearVelocity.y, move.z);
         // Steering only when moving
         if (Mathf.Abs(currentSpeed) > 0.5f)
         {
