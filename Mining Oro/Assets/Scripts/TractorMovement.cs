@@ -18,6 +18,7 @@ public class TractorController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    // This is called automatically by Player Input
     public void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
@@ -35,20 +36,21 @@ public class TractorController : MonoBehaviour
         }
         else
         {
+            // Natural slowing
             currentSpeed = Mathf.Lerp(currentSpeed, 0, brakeForce * Time.fixedDeltaTime);
         }
 
         currentSpeed = Mathf.Clamp(currentSpeed, -maxSpeed / 2, maxSpeed);
 
-        // Move
+        // Move tractor
         Vector3 move = transform.forward * currentSpeed;
-        rb.linearVelocity = new Vector3(move.x, rb.linearVelocity.y, move.z);
-
-        // Steering
+        rb.velocity = new Vector3(move.x, rb.linearVelocity.y, move.z);
+        // Steering only when moving
         if (Mathf.Abs(currentSpeed) > 0.5f)
         {
             float turn = turnInput * turnStrength * Time.fixedDeltaTime;
 
+            // Realistic reverse steering
             if (currentSpeed < 0)
                 turn *= -1;
 
