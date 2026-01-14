@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class TractorMovement : MonoBehaviour
+public class TractorController : MonoBehaviour
 {
     public float maxSpeed = 8f;
     public float acceleration = 6f;
@@ -10,40 +11,44 @@ public class TractorMovement : MonoBehaviour
     private float currentSpeed = 0f;
     private Rigidbody rb;
 
+    private Vector2 moveInput;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
     }
 
+    public void OnMove(InputValue value)
+    {
+        moveInput = value.Get<Vector2>();
+    }
+
     void FixedUpdate()
     {
-        float forwardInput = Input.GetAxis("Vertical");   // W / S
-        float turnInput = Input.GetAxis("Horizontal");    // A / D
+        float forwardInput = moveInput.y;
+        float turnInput = moveInput.x;
 
-        // --- ACCELERATION LOGIC ---
+        // Acceleration
         if (Mathf.Abs(forwardInput) > 0.1f)
         {
             currentSpeed += forwardInput * acceleration * Time.fixedDeltaTime;
         }
         else
         {
-            // Natural slowing when no key pressed
             currentSpeed = Mathf.Lerp(currentSpeed, 0, brakeForce * Time.fixedDeltaTime);
         }
 
-        // Clamp speed
         currentSpeed = Mathf.Clamp(currentSpeed, -maxSpeed / 2, maxSpeed);
 
-        // --- MOVE TRACTOR ---
+        // Move
         Vector3 move = transform.forward * currentSpeed;
-        rb.linearVelocity = new Vector3(move.x, rb.linearVelocity.y, move.z);
+        rb.velocity = new Vector3(move.x, rb.velocity.y, move.z);
 
-        // --- STEERING (only if moving) ---
+        // Steering
         if (Mathf.Abs(currentSpeed) > 0.5f)
         {
             float turn = turnInput * turnStrength * Time.fixedDeltaTime;
 
-            // Reverse steering when backing up (realistic)
             if (currentSpeed < 0)
                 turn *= -1;
 
