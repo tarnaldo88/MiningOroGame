@@ -16,6 +16,11 @@ public class RockSpawner : MonoBehaviour
 
     public LayerMask groundLayer;
 
+    void Start()
+    {
+        Spawn();
+    }
+
     public void Spawn()
     {
         for (int i = 0; i < amount; i++)
