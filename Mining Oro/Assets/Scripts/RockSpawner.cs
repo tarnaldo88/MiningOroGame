@@ -23,9 +23,9 @@ public class RockSpawner : MonoBehaviour
             Vector3 randomPos =
                 transform.position +
                 new Vector3(
-                    Random.Range(-areaSize.x, areaSize.x),
+                    UnityEngine.Random.Range(-areaSize.x, areaSize.x),
                     50f,
-                    Random.Range(-areaSize.y, areaSize.y)
+                    UnityEngine.Random.Range(-areaSize.y, areaSize.y)
                 );
 
             // Raycast to ground so rocks sit correctly
@@ -34,13 +34,13 @@ public class RockSpawner : MonoBehaviour
                 GameObject rock = Instantiate(rockPrefab, hit.point, Quaternion.identity);
 
                 // Random scale
-                float s = Random.Range(minScale, maxScale);
+                float s = UnityEngine.Random.Range(minScale, maxScale);
                 rock.transform.localScale = Vector3.one * s;
 
                 if (randomRotation)
                 {
                     rock.transform.rotation =
-                        Quaternion.Euler(0, Random.Range(0, 360f), 0);
+                        Quaternion.Euler(0, UnityEngine.Random.Range(0, 360f), 0);
                 }
 
                 rock.transform.parent = transform;
