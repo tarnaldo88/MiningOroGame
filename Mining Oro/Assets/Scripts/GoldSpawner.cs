@@ -11,6 +11,11 @@ public class GoldSpawner : MonoBehaviour
 
         Instantiate(goldCoin, spawnPos, Quaternion.identity);
 
+        if (goldCoin.TryGetComponent<Rigidbody>(out var rb))
+        {
+            rb.AddForce(Vector3.up * 3f, ForceMode.Impulse);
+        }
+
         Destroy(rock);
     }
 
