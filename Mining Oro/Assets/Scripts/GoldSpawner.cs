@@ -5,29 +5,28 @@ public class GoldSpawner : MonoBehaviour
     //[SerializeField] private GameObject rock;
     [SerializeField] private GameObject goldCoin;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void HandleRock(GameObject rock)
     {
-        
-    }
+        Vector3 spawnPos = rock.transform.position;
 
-    // Update is called once per frame
-    void Update()
-    {
-            
+        Instantiate(goldCoin, spawnPos, Quaternion.identity);
+
+        Destroy(rock);
     }
 
     private void OnCollisionEnter(Collision collision)
-    {        
-        if (collision.gameObject.CompareTag("Rock (Clone)"))
+    {
+        if (collision.gameObject.CompareTag("Rock"))
         {
-            Vector3 spawnPos = collision.transform.position;
+            HandleRock(collision.gameObject);
+        }
+    }
 
-            // Spawn gold coin
-            Instantiate(goldCoin, spawnPos, Quaternion.identity);
-
-            // Destroy the rock
-            Destroy(collision.gameObject);
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Rock"))
+        {
+            HandleRock(other.gameObject);
         }
     }
 }
