@@ -29,7 +29,7 @@ public class BoulderConverter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Rock"))
+        if (other.CompareTag("Boulder"))
         {
             HandleRock(other.gameObject);
         }
